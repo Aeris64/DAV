@@ -1,3 +1,5 @@
+:imagesdir: Image/
+
 # PoC
 
 ## UML
@@ -19,7 +21,7 @@ Classes & Methods are all PascalCase
 ```C#
 public class MyClass 
 { 
-    public void SomeMethod{} 
+    public void SomeMethod{}
 }
 ```
 
@@ -204,3 +206,9 @@ public class Bullets
 - Avoid using singletons for unique instances of prefabs that are not managers (such as the Player). Not adhering to this principle complicates inheritance hierarchies, and makes certain types of changes harder. Rather keep references to these in your GameManager
 
 - Define static properties and methods for public variables and methods that are used often from outside the class. This allows you to write GameManager.Player instead of GameManager.Instance.player.
+
+## Folder structure
+
+https://unity.com/how-to/organizing-your-project[*Source*]
+
+image::folder_structure.png[]
