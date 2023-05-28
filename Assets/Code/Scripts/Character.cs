@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 [Serializable]
@@ -44,16 +43,16 @@ public class Character : MonoBehaviour
     private int _position;
 
     [SerializeField]
-    private Spell[] spells;
+    private Spell[] _spells;
     public Spell[] Spells
     {
         get
         {
-            return this._Spell;
+            return this._spells;
         }
         set
         {
-            this._Spell = value;
+            this._spells = value;
         }
     }
 
