@@ -23,8 +23,23 @@ public abstract class Entity : MonoBehaviour
     #endregion Fields
 
     #region Public methods
-    public void attack()
-    {}
+    public Spell Attack(int spellNumber, int characTurn)
+    {
+        // No attack
+        if(Team[characTurn].Spells.Length <= 0) return null;
+
+        return _team[characTurn].Attack(spellNumber);
+    }
+
+    public void GetDamage(Spell spell)
+    {
+        for(int i = 0; i < spell.Targets.Length; i++)
+        {
+            if(Team[i].IsDead()) continue;
+
+            Team[i].GetDamage(spell.Damage);
+        }
+    }
 
     public string isInTeam(string character) { return ""; }
 

@@ -22,14 +22,4 @@ public class Player : Entity
     {
         
     }
-
-    public void attack()
-    {
-        int heroTurn = Random.Range(0, 3);
-
-        // No attack
-        if(Team[heroTurn].Spells.Length <= 0) return;
-
-        int spellChoose = Random.Range(0, Team[heroTurn].Spells.Length);
-    }
 }

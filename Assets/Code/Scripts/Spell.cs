@@ -8,12 +8,45 @@ public class Spell : MonoBehaviour
 
     [SerializeField]
     private string _name;
+    public string Name
+    {
+        get
+        {
+            return this.Name;
+        }
+        set
+        {
+            this.Name = value;
+        }
+    }
 
     [SerializeField]
     private int _damage;
+    public int Damage
+    {
+        get
+        {
+            return this.Damage;
+        }
+        set
+        {
+            this.Damage = value;
+        }
+    }
 
     [SerializeField]
     private int[] _targets;
+    public int[] Targets
+    {
+        get
+        {
+            return this._targets;
+        }
+        set
+        {
+            this._targets = value;
+        }
+    }
 
     [SerializeField]
     private int _cooldown;

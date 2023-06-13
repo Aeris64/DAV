@@ -84,11 +84,29 @@ public class Character : MonoBehaviour
         _position = 0;
     }
 
-    public void attack() {}
+    public Spell Attack(int spellNumber)
+    {
+        if(_spells[spellNumber] == null) return null;
+        Debug.Log($"{_name} attack with {_spells[spellNumber].Name} !");
 
-    public void getDamage(string spell) {}
+        return _spells[spellNumber];
+    }
 
-    public bool isDead() { return true; }
+    public void GetDamage(int damage)
+    {
+        if(IsDead()) return;
+
+        _lifePoint -= damage;
+
+        Debug.Log($"{_name} take {damage} damages !");
+    }
+
+    public bool IsDead()
+    {
+        Debug.Log($"{_name} have {_lifePoint} lifePoint(s) !");
+
+        return _lifePoint <= 0;
+    }
 
     #endregion Public methods
 }
