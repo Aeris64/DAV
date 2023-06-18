@@ -2,13 +2,28 @@
     "Items":
     [
         {
-            "_name": "Number 1 0"
+            "Name": "Lyrvis"
         },
         {
-            "_name": "Number 2 0"
+            "Name": "Ewillian"
         },
         {
-            "_name": "Number 3 0"
+            "Name": "Limiir"
+        },
+        {
+            "Name": "Aeris"
+        },
+        {
+            "Name": "NPC1"
+        },
+        {
+            "Name": "NPC2"
+        },
+        {
+            "Name": "NPC3"
+        },
+        {
+            "Name": "NPC4"
         }
     ]
 }

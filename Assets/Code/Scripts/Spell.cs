@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Spell : MonoBehaviour
@@ -12,11 +11,11 @@ public class Spell : MonoBehaviour
     {
         get
         {
-            return this.Name;
+            return this._name;
         }
         set
         {
-            this.Name = value;
+            this._name = value;
         }
     }
 
@@ -26,11 +25,11 @@ public class Spell : MonoBehaviour
     {
         get
         {
-            return this.Damage;
+            return this._damage;
         }
         set
         {
-            this.Damage = value;
+            this._damage = value;
         }
     }
 
@@ -50,9 +49,31 @@ public class Spell : MonoBehaviour
 
     [SerializeField]
     private int _cooldown;
+    public int Cooldown
+    {
+        get
+        {
+            return this._cooldown;
+        }
+        set
+        {
+            this._cooldown = value;
+        }
+    }
 
     [SerializeField]
     private int _cost;
+    public int Cost
+    {
+        get
+        {
+            return this._cost;
+        }
+        set
+        {
+            this._cost = value;
+        }
+    }
 
     #endregion Fields
 

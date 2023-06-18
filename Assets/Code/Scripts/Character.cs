@@ -1,8 +1,6 @@
 using System;
-
 using UnityEngine;
 
-[Serializable]
 public class Character : MonoBehaviour
 {
     #region Fields
@@ -23,24 +21,101 @@ public class Character : MonoBehaviour
 
     [SerializeField]
     private int _lifePoint;
+    public int LifePoint
+    {
+        get
+        {
+            return this._lifePoint;
+        }
+        set
+        {
+            this._lifePoint = value;
+        }
+    }
 
     [SerializeField]
     private int _lifePointMax;
+    public int LifePointMax
+    {
+        get
+        {
+            return this._lifePointMax;
+        }
+        set
+        {
+            this._lifePointMax = value;
+        }
+    }
 
     [SerializeField]
     private int _manaPoint;
+    public int ManaPoint
+    {
+        get
+        {
+            return this._manaPoint;
+        }
+        set
+        {
+            this._manaPoint = value;
+        }
+    }
 
     [SerializeField]
     private int _manaPointMax;
+    public int ManaPointMax
+    {
+        get
+        {
+            return this._manaPointMax;
+        }
+        set
+        {
+            this._manaPointMax = value;
+        }
+    }
 
     [SerializeField]
     private int _armor;
+    public int Armor
+    {
+        get
+        {
+            return this._armor;
+        }
+        set
+        {
+            this._armor = value;
+        }
+    }
 
     [SerializeField]
     private int _speed;
+    public int Speed
+    {
+        get
+        {
+            return this._speed;
+        }
+        set
+        {
+            this._speed = value;
+        }
+    }
 
     [SerializeField]
     private int _position;
+    public int Position
+    {
+        get
+        {
+            return this._position;
+        }
+        set
+        {
+            this._position = value;
+        }
+    }
 
     [SerializeField]
     private Spell[] _spells;
@@ -70,6 +145,7 @@ public class Character : MonoBehaviour
         _armor = armor;
         _speed = speed;
         _position = pos;
+        _spells = null;
     }
 
     public Character(string name)

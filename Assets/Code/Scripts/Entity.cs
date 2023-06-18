@@ -41,7 +41,7 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    public string isInTeam(string character) { return ""; }
+    public string IsInTeam(string character) { return ""; }
 
     #endregion Public methods
 

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BattleController : MonoBehaviour
 {
+    static string DATA_PATH = "Assets/Data/";
+
     private int _currentFighter;
     public Player Player;
     public Enemy Enemy;
@@ -17,32 +19,53 @@ public class BattleController : MonoBehaviour
         _currentFighter = 2;
         _currentPhase = BattlePhase.Main;
 
-        Player.Team.Add(new Character("Lyrvis", 10, 5, 0, 15, 0));
-        Player.Team.Add(new Character("Ewillian", 15, 0, 5, 10, 1));
-        Player.Team.Add(new Character("Limiir", 20, 8, 6, 8, 2));
-        Player.Team.Add(new Character("Aeris", 8, 15, 0, 10, 3));
+        Debug.Log(JsonHelper.LoadJson($"{DATA_PATH}Spells.json"));
 
-        Enemy.Team.Add(new Character("NPC 1", 10, 5, 0, 15, 0));
-        Enemy.Team.Add(new Character("NPC 2", 15, 0, 5, 10, 1));
-        Enemy.Team.Add(new Character("NPC 3", 20, 8, 6, 8, 2));
-        Enemy.Team.Add(new Character("NPC 4", 8, 15, 0, 10, 3));
+        string jsonString = JsonHelper.LoadJson($"{DATA_PATH}Spells.json");
 
-        Spell spellA = new Spell("Feu", 5, new int[0, 1], 0, 0);
-        Spell spellB = new Spell("Eau", 10, new int[1, 2], 0, 0);
-        Spell spellC = new Spell("Terre", 5, new int[2, 3], 0, 0);
-        Spell spellD = new Spell("Air", 5, new int[3, 4], 0, 0);
+        DataSpell[] dataSpells = JsonHelper.FromJson<DataSpell>(jsonString);
+        for(int i = 0; i < 4; i++)
+        {
+            Debug.Log(dataSpells[i].Name);
+        }
 
-        Spells[] spells = new Spells[spellA, spellB, spellC, spellD];
+        Spell[] spells = {
+            dataSpells[0].ToOriginalClass(),
+            dataSpells[1].ToOriginalClass(),
+            dataSpells[2].ToOriginalClass(),
+            dataSpells[3].ToOriginalClass()
+        };
 
-        Player.Team[0].Spells.Clone(spells);
-        Player.Team[1].Spells.Clone(spells);
-        Player.Team[2].Spells.Clone(spells);
-        Player.Team[3].Spells.Clone(spells);
+        for(int i = 0; i < 4; i++)
+        {
+            Debug.Log(spells[i].Name);
+        }
 
-        Enemy.Team[0].Spells.Clone(spells);
-        Enemy.Team[1].Spells.Clone(spells);
-        Enemy.Team[2].Spells.Clone(spells);
-        Enemy.Team[3].Spells.Clone(spells);
+        jsonString = JsonHelper.LoadJson($"{DATA_PATH}Characters.json");
+
+        DataCharacter[] dataCharacs = JsonHelper.FromJson<DataCharacter>(jsonString);
+
+        for(int i = 0; i < 4; i++)
+        {
+            Player.Team.Add(dataCharacs[i].ToOriginalClass());
+        }
+
+
+        for(int i = 0; i < 4; i++)
+        {
+            Debug.Log($"Here ! {Player.Team[i].Name}");
+        }
+
+        for(int i = 4; i < 8; i++)
+        {
+            Enemy.Team.Add(dataCharacs[i].ToOriginalClass());
+        }
+
+
+        for(int i = 0; i < 4; i++)
+        {
+            Debug.Log($"Here ! {Enemy.Team[i].Name}");
+        }
     }
 
     // Update is called once per frame
