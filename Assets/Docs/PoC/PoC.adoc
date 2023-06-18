@@ -34,7 +34,7 @@ int someStaticValue = 10;
 ### Public Variables
 Public Variables are PascalCase with a getter / setter and private storage
 ```C#
-private string name;
+private string _name;
 public string Name
 {
     get
@@ -82,13 +82,13 @@ public UnityAction OnDeath;
 ### Declarations
 - Always use access level modifiers. Do not omit them. If you don't write any access modifier, the compiler will assume it's private, but that doesn't mean you shouldn't write the keyword private.
 ```C#
-private int privateVariable;
+private int _privateVariable;
 ```
 
 - Use single declaration per line. It helps with keeping everything clear.
 ```C#
-private int firstVariable;
-private int secondVariable;
+private int _firstVariable;
+private int _secondVariable;
 ```
 
 - Declare only one class / interface per source file, with the exception of internal classes. You may end up with more files, but it's clear and you can easily find what you are searching for.
@@ -142,7 +142,7 @@ for(int i=0; i<10; i++)
 - However, if you need something private to be displayed in the Inspector, there is a way of doing it and it's by using the [SerializeField] attribute
 ```C#
 [SerializeField]
-private bool hasHealthPotion = true;
+private bool _hasHealthPotion = true;
 ```
 
 ### General Coding
