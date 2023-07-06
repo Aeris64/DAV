@@ -1,7 +1,9 @@
-// using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BattleController : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class BattleController : MonoBehaviour
     private int _currentFighter;
     public Player Player;
     public Enemy Enemy;
+
+    public Canvas MyCanvas;
 
     private BattlePhase _currentPhase;
 
@@ -74,6 +78,45 @@ public class BattleController : MonoBehaviour
         {
             Enemy.Team[i].Spells = spells;
         }
+
+        // /!\ Attention dépendance à la nomenclature des containers !!!!
+        var CanvasContainers = MyCanvas.GetComponentsInChildren<Transform>().Where(child => child.name.Contains("Container")).ToList();
+
+        for(int i = 0; i < CanvasContainers.Count(); i++)
+        {
+            var actualContainer = CanvasContainers[i];
+            if(!actualContainer) continue;
+
+            var characterNameContainer = actualContainer.Find("CharacterName");
+            if(characterNameContainer)
+            {
+                var characterName = characterNameContainer.GetComponent<TMP_Text>();
+                if(characterName)
+                {
+                    characterName.text = Player.Team[i].Name;
+                }
+            }
+
+            var healthPointContainer = actualContainer.Find("HealthPoint");
+            if(healthPointContainer)
+            {
+                var healthPoint = healthPointContainer.GetComponent<TMP_Text>();
+                if(healthPoint)
+                {
+                    healthPoint.text = $"HP: {Player.Team[i].LifePoint}";
+                }
+            }
+
+            var manaPointContainer = actualContainer.Find("ManaPoint");
+            if(manaPointContainer)
+            {
+                var manaPoint = manaPointContainer.GetComponent<TMP_Text>();
+                if(manaPoint)
+                {
+                    manaPoint.text = $"MP: {Player.Team[i].ManaPoint}";
+                }
+            }
+        }
     }
 
     // Update is called once per frame
@@ -90,27 +133,30 @@ public class BattleController : MonoBehaviour
         if(PlayerTurn())
         {
             Spell spell = Player.Attack(spellNumber, _currentFighter);
-            // Enemy.GetDamage(spell);
             GetDamage(spell);
         }
         else
         {
             spellNumber = Random.Range(0, 4);
             Spell spell = Enemy.Attack(spellNumber, _currentFighter);
-            // Player.GetDamage(spell);
-            GetDamage(spell);
+            GetDamage(spell, true);
         }
         _currentFighter++;
     }
 
-    public void GetDamage(Spell spell)
+    public void GetDamage(Spell spell, bool npcTurn = false)
     {
         if(spell.Name == null) return;
 
         Debug.Log($"Spell {spell.Name} is use !");
         for(int i = 0; i < spell.Targets.Length; i++)
         {
-            GetPosition(spell.Targets[i]).GetDamage(spell.Damage);
+            int actualTarget = spell.Targets[i];
+            if(npcTurn)
+            {
+                actualTarget = 7 - spell.Targets[i];
+            }
+            GetPosition(actualTarget).GetDamage(spell.Damage);
         }
     }
 

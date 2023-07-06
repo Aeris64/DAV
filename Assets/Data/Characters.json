@@ -3,35 +3,43 @@
     [
         {
             "Name": "Lyrvis",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "Ewillian",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "Limiir",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "Aeris",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "NPC1",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "NPC2",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "NPC3",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         },
         {
             "Name": "NPC4",
-            "LifePointMax": 20
+            "LifePointMax": 20,
+            "ManaPointMax": 100
         }
     ]
 }

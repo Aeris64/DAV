@@ -1284,6 +1284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 825718808}
   Enemy: {fileID: 1795045987}
+  MyCanvas: {fileID: 1007710945}
 --- !u!1 &647920064
 GameObject:
   m_ObjectHideFlags: 0
