@@ -25,7 +25,7 @@ public abstract class Entity : MonoBehaviour
     #region Public methods
     public Spell Attack(int spellNumber, int characTurn)
     {
-        // No attack
+        // No attack TODO
         if(Team[characTurn].Spells.Length <= 0) return null;
 
         return _team[characTurn].Attack(spellNumber);

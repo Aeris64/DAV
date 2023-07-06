@@ -2,16 +2,24 @@
     "Items":
     [
         {
-            "Name": "Feu"
+            "Name": "Feu",
+            "Targets": [0, 1],
+            "Damage": 5
         },
         {
-            "Name": "Eau"
+            "Name": "Eau",
+            "Targets": [1, 2],
+            "Damage": 5
         },
         {
-            "Name": "Terre"
+            "Name": "Terre",
+            "Targets": [2, 3],
+            "Damage": 5
         },
         {
-            "Name": "Air"
+            "Name": "Air",
+            "Targets": [3, 4],
+            "Damage": 5
         }
     ]
 }

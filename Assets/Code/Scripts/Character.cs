@@ -162,7 +162,9 @@ public class Character : MonoBehaviour
 
     public Spell Attack(int spellNumber)
     {
-        if(_spells[spellNumber] == null) return null;
+        // No attack TODO
+        if(_spells[spellNumber].Name == null) return null;
+
         Debug.Log($"{_name} attack with {_spells[spellNumber].Name} !");
 
         return _spells[spellNumber];
@@ -175,11 +177,13 @@ public class Character : MonoBehaviour
         _lifePoint -= damage;
 
         Debug.Log($"{_name} take {damage} damages !");
+
+        IsDead();
     }
 
     public bool IsDead()
     {
-        Debug.Log($"{_name} have {_lifePoint} lifePoint(s) !");
+        Debug.Log($"{_name} have {_lifePoint}/{_lifePointMax} lifePoint(s) !");
 
         return _lifePoint <= 0;
     }

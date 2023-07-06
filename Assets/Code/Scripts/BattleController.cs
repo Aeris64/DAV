@@ -16,7 +16,7 @@ public class BattleController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _currentFighter = 2;
+        _currentFighter = 0;
         _currentPhase = BattlePhase.Main;
 
         Debug.Log(JsonHelper.LoadJson($"{DATA_PATH}Spells.json"));
@@ -50,7 +50,6 @@ public class BattleController : MonoBehaviour
             Player.Team.Add(dataCharacs[i].ToOriginalClass());
         }
 
-
         for(int i = 0; i < 4; i++)
         {
             Debug.Log($"Here ! {Player.Team[i].Name}");
@@ -61,10 +60,19 @@ public class BattleController : MonoBehaviour
             Enemy.Team.Add(dataCharacs[i].ToOriginalClass());
         }
 
-
         for(int i = 0; i < 4; i++)
         {
             Debug.Log($"Here ! {Enemy.Team[i].Name}");
+        }
+
+        for(int i = 0; i < 4; i++)
+        {
+            Player.Team[i].Spells = spells;
+        }
+
+        for(int i = 0; i < 4; i++)
+        {
+            Enemy.Team[i].Spells = spells;
         }
     }
 
@@ -77,24 +85,52 @@ public class BattleController : MonoBehaviour
     [SerializeField]
     public void GameTurn(int spellNumber)
     {
+        Debug.Log($"Spell Number: {spellNumber}");
+        Debug.Log($"Current fighter: {_currentFighter}");
         if(PlayerTurn())
         {
             Spell spell = Player.Attack(spellNumber, _currentFighter);
-            Enemy.GetDamage(spell);
+            // Enemy.GetDamage(spell);
+            GetDamage(spell);
         }
         else
         {
             spellNumber = Random.Range(0, 4);
             Spell spell = Enemy.Attack(spellNumber, _currentFighter);
-            Player.GetDamage(spell);
+            // Player.GetDamage(spell);
+            GetDamage(spell);
         }
         _currentFighter++;
+    }
+
+    public void GetDamage(Spell spell)
+    {
+        if(spell.Name == null) return;
+
+        Debug.Log($"Spell {spell.Name} is use !");
+        for(int i = 0; i < spell.Targets.Length; i++)
+        {
+            GetPosition(spell.Targets[i]).GetDamage(spell.Damage);
+        }
     }
 
     public bool PlayerTurn()
     {
         Debug.Log($"Player turn: {(_currentFighter % 2 == 0 ? true : false)}");
         return (_currentFighter % 2 == 0 ? true : false);
+    }
+
+    public Character GetPosition(int position)
+    {
+        if(position < 4)
+        {
+            return Player.Team[position];
+        }
+        else if(position < 8)
+        {
+            return Enemy.Team[position - 4];
+        }
+        return null;
     }
 }
 

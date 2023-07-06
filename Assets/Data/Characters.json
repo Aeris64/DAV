@@ -2,28 +2,36 @@
     "Items":
     [
         {
-            "Name": "Lyrvis"
+            "Name": "Lyrvis",
+            "LifePointMax": 20
         },
         {
-            "Name": "Ewillian"
+            "Name": "Ewillian",
+            "LifePointMax": 20
         },
         {
-            "Name": "Limiir"
+            "Name": "Limiir",
+            "LifePointMax": 20
         },
         {
-            "Name": "Aeris"
+            "Name": "Aeris",
+            "LifePointMax": 20
         },
         {
-            "Name": "NPC1"
+            "Name": "NPC1",
+            "LifePointMax": 20
         },
         {
-            "Name": "NPC2"
+            "Name": "NPC2",
+            "LifePointMax": 20
         },
         {
-            "Name": "NPC3"
+            "Name": "NPC3",
+            "LifePointMax": 20
         },
         {
-            "Name": "NPC4"
+            "Name": "NPC4",
+            "LifePointMax": 20
         }
     ]
 }
