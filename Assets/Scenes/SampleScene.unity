@@ -1733,6 +1733,7 @@ MonoBehaviour:
   Enemy: {fileID: 1795045987}
   MyCanvas: {fileID: 1007710945}
   _roundOwner: {fileID: 505748819}
+  _menuSpells: {fileID: 1473166241}
 --- !u!1 &647920064
 GameObject:
   m_ObjectHideFlags: 0
