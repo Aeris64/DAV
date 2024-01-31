@@ -37,14 +37,16 @@ public class DataSpell
 
     public int Damage = 0;
 
-    public int[] Targets = null;
+    public int[] TargetAlly = null;
 
-    private int Cooldown = 0;
+    public int[] TargetEnemy = null;
 
-    private int Cost = 0;
+    public int Cooldown = 0;
+
+    public int Cost = 0;
 
     public Spell ToOriginalClass()
     {
-        return new Spell(Name, Damage, Targets, Cooldown, Cost);
+        return new Spell(Name, Damage, TargetAlly, TargetEnemy, Cooldown, Cost);
     }
 }

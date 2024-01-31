@@ -3,23 +3,38 @@
     [
         {
             "Name": "Feu",
-            "Targets": [0, 1],
-            "Damage": 5
+            "TargetAlly": [],
+            "TargetEnemy": [0, 1],
+            "Damage": 5,
+            "Cost": 20
         },
         {
             "Name": "Eau",
-            "Targets": [1, 2],
-            "Damage": 5
+            "TargetAlly": [],
+            "TargetEnemy": [1, 2],
+            "Damage": 5,
+            "Cost": 20
         },
         {
             "Name": "Terre",
-            "Targets": [2, 3],
-            "Damage": 5
+            "TargetAlly": [],
+            "TargetEnemy": [2, 3],
+            "Damage": 5,
+            "Cost": 20
         },
         {
             "Name": "Air",
-            "Targets": [3, 4],
-            "Damage": 5
+            "TargetAlly": [],
+            "TargetEnemy": [0, 3],
+            "Damage": 5,
+            "Cost": 20
+        },
+        {
+            "Name": "Light",
+            "TargetAlly": [],
+            "TargetEnemy": [0, 1],
+            "Damage": 5,
+            "Cost": 20
         }
     ]
 }

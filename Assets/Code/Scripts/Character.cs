@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
@@ -131,6 +133,20 @@ public class Character : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private Transform _container;
+    public Transform Container
+    {
+        get
+        {
+            return this._container;
+        }
+        set
+        {
+            this._container = value;
+        }
+    }
+
     #endregion Fields
 
     #region Public methods
@@ -167,18 +183,39 @@ public class Character : MonoBehaviour
 
         Debug.Log($"{_name} attack with {_spells[spellNumber].Name} !");
 
+        GetMana(_spells[spellNumber].Cost);
+
         return _spells[spellNumber];
     }
 
-    public void GetDamage(int damage)
+    public bool GetDamage(int damage)
     {
-        if(IsDead()) return;
+        if(IsDead()) return false;
 
         _lifePoint -= damage;
 
-        Debug.Log($"{_name} take {damage} damages !");
+        Debug.Log($"{_name} take {damage} damage(s) !");
 
-        IsDead();
+        UpdateContainerStat();
+
+        return !IsDead();
+    }
+
+    public bool GetMana(int mana)
+    {
+        if(_manaPoint - mana < 0)
+        {
+            Debug.Log($"{_name} have {_manaPoint} mana(s) and can't pay {mana} !");
+            return false;
+        }
+
+        _manaPoint -= mana;
+
+        UpdateContainerStat();
+
+        Debug.Log($"{_name} pay {mana} mana(s) !");
+
+        return true;
     }
 
     public bool IsDead()
@@ -186,6 +223,46 @@ public class Character : MonoBehaviour
         Debug.Log($"{_name} have {_lifePoint}/{_lifePointMax} lifePoint(s) !");
 
         return _lifePoint <= 0;
+    }
+
+    public bool UpdateContainerStat()
+    {
+        if(!_container) return false;
+
+        var healthPointContainer = _container.Find("HealthPoint");
+        if(healthPointContainer)
+        {
+            var healthPoint = healthPointContainer.GetComponent<TMP_Text>();
+            if(healthPoint)
+            {
+                healthPoint.text = $"HP: {_lifePoint}";
+            }
+        }
+
+        var manaPointContainer = _container.Find("ManaPoint");
+        if(manaPointContainer)
+        {
+            var manaPoint = manaPointContainer.GetComponent<TMP_Text>();
+            if(manaPoint)
+            {
+                manaPoint.text = $"MP: {_manaPoint}";
+            }
+        }
+
+        if(IsDead())
+        {
+            var panelContainer = _container.Find("Panel");
+            if(panelContainer)
+            {
+                var panelImage = panelContainer.GetComponent<Image>();
+                if(panelImage)
+                {
+                    panelImage.color = new Color(0, 0, 0);
+                }
+            }
+        }
+
+        return true;
     }
 
     #endregion Public methods

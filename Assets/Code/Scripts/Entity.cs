@@ -25,6 +25,7 @@ public abstract class Entity : MonoBehaviour
     #region Public methods
     public Spell Attack(int spellNumber, int characTurn)
     {
+        Debug.Log($"HERE <<>< {characTurn}");
         // No attack TODO
         if(Team[characTurn].Spells.Length <= 0) return null;
 
@@ -33,7 +34,7 @@ public abstract class Entity : MonoBehaviour
 
     public void GetDamage(Spell spell)
     {
-        for(int i = 0; i < spell.Targets.Length; i++)
+        for(int i = 0; i < spell.TargetEnemy.Length; i++)
         {
             if(Team[i].IsDead()) continue;
 
