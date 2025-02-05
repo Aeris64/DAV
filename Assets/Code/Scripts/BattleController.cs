@@ -8,9 +8,24 @@ using Unity.VisualScripting;
 
 public class BattleController : MonoBehaviour
 {
-    static string DATA_PATH = "Assets/Data/";
+    static string DATA_PATH = "Assets/Data";
 
     private int _currentFighterNb;
+    private int _lastFighterNb
+    {
+        get
+        {
+            return (_currentFighterNb - 1 < 0) ? 3 : _currentFighterNb - 1;
+        }
+    }
+    private int _nextFighterNb
+    {
+        get
+        {
+            return (_currentFighterNb + 1 > 3) ? 0 : _currentFighterNb + 1;
+        }
+    }
+
     private int _currentTurnPlayer;
     private int _currentTurnNb = 0;
     public Player Player;
@@ -56,9 +71,9 @@ public class BattleController : MonoBehaviour
         _currentTurnNb = 0;
         _currentPhase = BattlePhase.Main;
 
-        Debug.Log(JsonHelper.LoadJson($"{DATA_PATH}Spells.json"));
+        Debug.Log(JsonHelper.LoadJson($"{DATA_PATH}/Spells.json"));
 
-        string jsonString = JsonHelper.LoadJson($"{DATA_PATH}Spells.json");
+        string jsonString = JsonHelper.LoadJson($"{DATA_PATH}/Spells.json");
 
         DataSpell[] dataSpells = JsonHelper.FromJson<DataSpell>(jsonString);
         // for(int i = 0; i < 4; i++)
@@ -78,7 +93,7 @@ public class BattleController : MonoBehaviour
         //     Debug.Log(spells[i].Name);
         // }
 
-        jsonString = JsonHelper.LoadJson($"{DATA_PATH}Characters.json");
+        jsonString = JsonHelper.LoadJson($"{DATA_PATH}/Characters.json");
 
         DataCharacter[] dataCharacs = JsonHelper.FromJson<DataCharacter>(jsonString);
 
@@ -115,6 +130,8 @@ public class BattleController : MonoBehaviour
         FillTeam("ContainerCharacter", Player.Team);
         FillTeam("ContainerEnemy", Enemy.Team);
         FillSpells();
+
+        GetCurrentCharacterAction().UpdateContainerColor("current");
     }
 
     // Update is called once per frame
@@ -126,27 +143,35 @@ public class BattleController : MonoBehaviour
     [SerializeField]
     public void GameTurn(int spellNumber)
     {
-        Debug.Log($"Spell Number: {spellNumber}");
-        Debug.Log($"Current fighter: {_currentFighterNb}");
+        GetLastCharacterAction().UpdateContainerColor("normal");
+        StartCoroutine(WaitForUpdateCurrentContainer(2, GetCurrentCharacterAction(), GetNextCharacterAction()));
+        // Debug.Log($"Spell Number: {spellNumber}");
+        Debug.Log($"Current fighter: {GetCurrentCharacterAction().Name}");
+        Debug.Log($"Last fighter: {GetLastCharacterAction().Name}");
+        Debug.Log($"Next fighter: {GetNextCharacterAction().Name}");
+        Character fighter = GetCurrentCharacterAction();
+        if(!PlayerTurn())
+        {
+            spellNumber = Random.Range(0, 4);
+        }
+        Spell spell = fighter.Attack(spellNumber);
+        GetDamage(spell);
+
+        // Current player turn change here
+        _currentTurnPlayer++;
+
         if(PlayerTurn())
         {
-            Spell spell = Player.Attack(spellNumber, _currentFighterNb);
-            GetDamage(spell);
+            _currentFighterNb++;
+            if(_currentFighterNb >= 4)
+            {
+                _currentFighterNb = 0;
+                _currentTurnNb++;
+            }
         }
         else
         {
-            spellNumber = Random.Range(0, 4);
-            Spell spell = Enemy.Attack(spellNumber, _currentFighterNb);
-            GetDamage(spell, true);
-            _currentFighterNb++;
-        }
-
-        _currentTurnPlayer++;
-
-        if(_currentFighterNb >= 4)
-        {
-            _currentFighterNb = 0;
-            _currentTurnNb++;
+            StartCoroutine(WaitForNextEnemyTurn(3));
         }
 
         var roundOwnerText = RoundOwner.GetComponent<TMP_Text>();
@@ -156,39 +181,43 @@ public class BattleController : MonoBehaviour
         }
     }
 
-    public void GetDamage(Spell spell, bool npcTurn = false)
+    public void GetDamage(Spell spell)
     {
         if(spell.Name == null) return;
 
-        Debug.Log($"Spell {spell.Name} is used !");
+        // Debug.Log($"Spell {spell.Name} is used !");
         for(int i = 0; i < spell.TargetAlly.Length; i++)
         {
             int actualTarget = spell.TargetAlly[i];
-            if(npcTurn)
+            if(!PlayerTurn())
             {
                 actualTarget = 4 + spell.TargetAlly[i];
             }
 
             Character target = GetPosition(actualTarget);
+            target.UpdateContainerColor("target");
+            StartCoroutine(WaitForUpdateContainer(1, target));
             target.GetDamage(- spell.Damage);
         }
 
         for(int i = 0; i < spell.TargetEnemy.Length; i++)
         {
             int actualTarget = 4 + spell.TargetEnemy[i];
-            if(npcTurn)
+            if(!PlayerTurn())
             {
                 actualTarget = spell.TargetEnemy[i];
             }
 
             Character target = GetPosition(actualTarget);
+            target.UpdateContainerColor("target");
+            StartCoroutine(WaitForUpdateContainer(1, target));
             target.GetDamage(spell.Damage);
         }
     }
 
     public bool PlayerTurn()
     {
-        Debug.Log($"Player turn: {(_currentTurnPlayer % 2 == 0)}");
+        // Debug.Log($"Player turn: {(_currentTurnPlayer % 2 == 0)}");
         return _currentTurnPlayer % 2 == 0;
     }
 
@@ -265,6 +294,58 @@ public class BattleController : MonoBehaviour
                 spellButtons[i].text = $"{currentFighter.Spells[i].Name}";
             // }
         }
+    }
+
+    public Character GetLastCharacterAction()
+    {
+        if(PlayerTurn())
+        {
+            return Enemy.Team[_lastFighterNb];
+        }
+        return Player.Team[_currentFighterNb];
+    }
+
+    public Character GetCurrentCharacterAction()
+    {
+        if(PlayerTurn())
+        {
+            return Player.Team[_currentFighterNb];
+        }
+        return Enemy.Team[_currentFighterNb];
+    }
+
+    public Character GetNextCharacterAction()
+    {
+        if(PlayerTurn())
+        {
+            return Enemy.Team[_currentFighterNb];
+        }
+        return Player.Team[_nextFighterNb];
+    }
+
+    public IEnumerator WaitForUpdateContainer(int seconds, Character target)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        target.UpdateContainerColor("normal");
+    }
+
+    public IEnumerator WaitForNextEnemyTurn(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        GameTurn(-1);
+    }
+
+    public IEnumerator WaitForUpdateCurrentContainer(int seconds, Character current, Character next)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        // Debug.Log(GetLastCharacterAction().Name);
+        // Debug.Log(GetCurrentCharacterAction().Name);
+        current.UpdateContainerColor("normal");
+        next.UpdateContainerColor("current");
+        // GetNextCharacterAction().UpdateContainerColor("current");
     }
 }
 

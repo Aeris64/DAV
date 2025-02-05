@@ -25,7 +25,6 @@ public abstract class Entity : MonoBehaviour
     #region Public methods
     public Spell Attack(int spellNumber, int characTurn)
     {
-        Debug.Log($"HERE <<>< {characTurn}");
         // No attack TODO
         if(Team[characTurn].Spells.Length <= 0) return null;
 

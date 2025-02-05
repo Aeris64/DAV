@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Character : MonoBehaviour
 {
@@ -181,7 +182,7 @@ public class Character : MonoBehaviour
         // No attack TODO
         if(_spells[spellNumber].Name == null) return null;
 
-        Debug.Log($"{_name} attack with {_spells[spellNumber].Name} !");
+        // Debug.Log($"{_name} attack with {_spells[spellNumber].Name} !");
 
         GetMana(_spells[spellNumber].Cost);
 
@@ -194,7 +195,7 @@ public class Character : MonoBehaviour
 
         _lifePoint -= damage;
 
-        Debug.Log($"{_name} take {damage} damage(s) !");
+        // Debug.Log($"{_name} take {damage} damage(s) !");
 
         UpdateContainerStat();
 
@@ -205,7 +206,7 @@ public class Character : MonoBehaviour
     {
         if(_manaPoint - mana < 0)
         {
-            Debug.Log($"{_name} have {_manaPoint} mana(s) and can't pay {mana} !");
+            // Debug.Log($"{_name} have {_manaPoint} mana(s) and can't pay {mana} !");
             return false;
         }
 
@@ -213,14 +214,14 @@ public class Character : MonoBehaviour
 
         UpdateContainerStat();
 
-        Debug.Log($"{_name} pay {mana} mana(s) !");
+        // Debug.Log($"{_name} pay {mana} mana(s) !");
 
         return true;
     }
 
     public bool IsDead()
     {
-        Debug.Log($"{_name} have {_lifePoint}/{_lifePointMax} lifePoint(s) !");
+        // Debug.Log($"{_name} have {_lifePoint}/{_lifePointMax} lifePoint(s) !");
 
         return _lifePoint <= 0;
     }
@@ -251,14 +252,42 @@ public class Character : MonoBehaviour
 
         if(IsDead())
         {
-            var panelContainer = _container.Find("Panel");
-            if(panelContainer)
+            UpdateContainerColor("dead");
+        }
+
+        return true;
+    }
+    public bool UpdateContainerColor(string phase)
+    {
+        if(!_container) return false;
+
+        Color deadColor = new Color(0, 0, 0, 100);
+
+        Color newColor;
+        switch(phase)
+        {
+            case "dead":
+                newColor = deadColor;
+                break;
+            case "current":
+                newColor = new Color(0, 255, 0, 100);
+                break;
+            case "target":
+                newColor = new Color(255, 0, 0, 100);
+                break;
+            default:
+            case "normal":
+                newColor = new Color(1, 1, 1, .392f);
+                break;
+        }
+
+        var panelContainer = _container.Find("Panel");
+        if(panelContainer)
+        {
+            var panelImage = panelContainer.GetComponent<Image>();
+            if(panelImage && !panelImage.color.Equals(deadColor))
             {
-                var panelImage = panelContainer.GetComponent<Image>();
-                if(panelImage)
-                {
-                    panelImage.color = new Color(0, 0, 0);
-                }
+                panelImage.color = newColor;
             }
         }
 
